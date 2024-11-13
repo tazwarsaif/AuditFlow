@@ -15,16 +15,16 @@ class Appointment(models.Model):
     status = models.CharField(max_length=20, default="CONFIRM")
 
 
-class AppointmentRescheduleRequest(models.model):
+class AppointmentRescheduleRequest(models.Model):
     status = (
         ('Confirmed',"Confirmed"),
         ('Pending',"Pending"),
         ('Pending',"Pending"),
         ('Canceled',"Canceled")
     )
-    appointment_id = models.ForeignKey(Appointment)
-    sent_to = models.ForeignKey(User,on_delete=models.CASCADE)
-    sent_by = models.ForeignKey(User)
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    sent_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="app_requested7")
+    sent_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="appointments")
     suggested_start_time = models.DateTimeField(auto_now_add=False)
     suggested_end_time = models.DateTimeField(auto_now_add=False)
     
