@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import User
+from .models import User,Company
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -14,3 +14,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
+
+
+class CompanyInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ['name','email','phone','contract_expiration']
