@@ -20,10 +20,6 @@ def register_admin(request):
             return Response(serializer.errors, 400)
 
 
-class Item:
-    pass
-
-
 @api_view(['GET','POST'])
 @permission_classes([AllowAny])
 def companyCreation(request):
