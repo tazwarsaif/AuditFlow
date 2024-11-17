@@ -11,6 +11,13 @@ class User(AbstractUser):
     user_type = models.CharField(max_length=20, choices=USER_TYPE, default="ADMIN")
     supervisor = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
 
+class Auditor(models.Model):
+    first_name=models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
+    email=models.EmailField()
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    specializations=models.CharField(max_length=255, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
