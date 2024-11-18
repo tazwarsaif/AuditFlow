@@ -2,9 +2,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from .models import Company
-from .serializers import UserRegistrationSerializer, CompanyInfoSerializer
-
+from .models import Company, Auditor
+from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer
 
 
 @csrf_exempt
@@ -35,3 +34,10 @@ def companyCreation(request):
         items = Company.objects.all()
         serializer = CompanyInfoSerializer(instance=items, many=True)
         return Response(serializer.data, 200)
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def get_auditors(request):
+    auditor= Auditor.objects.all()
+    serializer=AuditorManagementSerializer(instance=auditor, many=True)
+    return Response(serializer.data, 200)
