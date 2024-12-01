@@ -41,3 +41,14 @@ def get_auditors(request):
     auditor= Auditor.objects.all()
     serializer=AuditorManagementSerializer(instance=auditor, many=True)
     return Response(serializer.data, 200)
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def add_Auditors(request):
+    if request.method == 'POST':
+        serializer=AuditorManagementSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':'created successfully'}, 201)
+        else:
+            return Response(serializer.errors, 400)

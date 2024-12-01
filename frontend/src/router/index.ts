@@ -12,8 +12,8 @@ import ProfileView from '@/views/ProfileView.vue'
 import TablesView from '@/views/TablesView.vue'
 import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
-import AuditorsView from '@/views/AuditorsView.vue'
-
+import AuditorsView from '@/views/auditors/AuditorsView.vue'
+import AddAuditor from '@/views/auditors/AddAuditor.vue'
 const routes = [
   {
     path: '/',
@@ -29,6 +29,14 @@ const routes = [
     component: AuditorsView,
     meta: {
       title: "Auditors"
+    }
+  },
+  {
+    path: "/auditors/add",
+    name: 'auditors-add',
+    component: AddAuditor,
+    meta: {
+      title: " Add Auditors"
     }
   },
   {
