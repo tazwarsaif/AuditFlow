@@ -19,7 +19,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class CompanyInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ['name','email','phone','contract_expiration']
+        fields = ['id','name','email','phone','contract_expiration']
 
 
 class AuditorManagementSerializer(serializers.ModelSerializer):

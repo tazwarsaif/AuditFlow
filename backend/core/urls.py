@@ -5,8 +5,12 @@ from .views import *
 urlpatterns = [
     path('auth/register/', register_admin),
     path('company/add/',companyCreation),
+    path('company/',get_companies),
+    path('company/edit/<str:id>',edit_companies),
+    path('company/delete/<str:id>',delete_company),
+    path('company/add/',add_company),
     path('auditors/', get_auditors),
     path('auditors/add/', add_Auditors),
     path('auditors/edit/', get_auditors),
-    path('auditors/delete/', get_auditors)
+    path('auditors/delete/', get_auditors),
 ]

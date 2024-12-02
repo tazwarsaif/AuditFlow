@@ -37,10 +37,52 @@ def companyCreation(request):
 
 @api_view(['GET','POST'])
 @permission_classes([AllowAny])
+def get_companies(request):
+    companies= Company.objects.all()
+    serializer=CompanyInfoSerializer(instance=companies, many=True)
+    return Response(serializer.data, 200)
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def add_company(request):
+    if request.method == 'POST':
+        serializer=CompanyInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':'created successfully'}, 201)
+        else:
+            return Response(serializer.errors, 400)
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def edit_companies(request,id):
+    company= Company.objects.get(pk=id)
+    if request.method == 'GET':
+        serializer=CompanyInfoSerializer(instance=company)
+        return Response(serializer.data , status=200)
+    else:
+        serializer = CompanyInfoSerializer(data=request.data, instance=company)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': 'changes saved successfully'}, 201)
+        else:
+            return Response(serializer.errors, 400)
+
+@api_view(['DELETE'])
+@permission_classes([AllowAny])
+def delete_company(request,id):
+    comp =Company.objects.get(pk=id)
+    comp.delete()
+    return Response({'data':'deleted successfully'})
+
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
 def get_auditors(request):
     auditor= Auditor.objects.all()
     serializer=AuditorManagementSerializer(instance=auditor, many=True)
     return Response(serializer.data, 200)
+
 
 @api_view(['GET','POST'])
 @permission_classes([AllowAny])

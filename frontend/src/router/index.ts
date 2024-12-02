@@ -14,6 +14,9 @@ import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
 import AuditorsView from '@/views/auditors/AuditorsView.vue'
 import AddAuditor from '@/views/auditors/AddAuditor.vue'
+import Company from '@/views/companyview/Company.vue'
+import CompanyAdd from '@/views/companyview/CompanyAdd.vue'
+import CompanyEdit from '@/views/companyview/CompanyEdit.vue'
 const routes = [
   {
     path: '/',
@@ -21,6 +24,30 @@ const routes = [
     component: ECommerceView,
     meta: {
       title: 'eCommerce Dashboard'
+    }
+  },
+  {
+    path: "/company",
+    name: 'company-view',
+    component: Company,
+    meta: {
+      title: "Company"
+    }
+  },
+  {
+    path: "/company/add",
+    name: 'company-add',
+    component: CompanyAdd,
+    meta: {
+      title: "Add Company"
+    }
+  },
+  {
+    path: "/company/edit/:id",
+    name: 'company-edit',
+    component: CompanyEdit,
+    meta: {
+      title: "Edit Company"
     }
   },
   {
