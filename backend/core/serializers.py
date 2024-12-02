@@ -25,5 +25,6 @@ class CompanyInfoSerializer(serializers.ModelSerializer):
 class AuditorManagementSerializer(serializers.ModelSerializer):
     class Meta:
         model= Auditor
-        fields = ['first_name', 'last_name', 'email', 'phone', 'specializations']
+        fields = ['id','first_name', 'last_name', 'email', 'phone', 'specializations']
+        read_only_fields=['id']
 

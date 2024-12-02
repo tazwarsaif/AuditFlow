@@ -94,3 +94,27 @@ def add_Auditors(request):
             return Response({'data':'created successfully'}, 201)
         else:
             return Response(serializer.errors, 400)
+
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def edit_Auditors(request,id):
+    auditor = Auditor.objects.get(pk=id)
+    if request.method== "GET":
+        serializer=AuditorManagementSerializer(instance=auditor,many= False)
+        return Response(serializer.data, 200)
+    if request.method == 'POST':
+        serializer=AuditorManagementSerializer(data=request.data, instance=auditor)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':'changes saved successfully'}, 200)
+        else:
+            return Response(serializer.errors, 400)
+
+
+@api_view(['DELETE'])
+@permission_classes([AllowAny])
+def delete_auditors(request,id):
+    audi=Auditor.objects.get(pk=id)
+    audi.delete()
+    return Response({'data':'deleted successfully'})

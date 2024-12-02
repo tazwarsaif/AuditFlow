@@ -17,6 +17,7 @@ import AddAuditor from '@/views/auditors/AddAuditor.vue'
 import Company from '@/views/companyview/Company.vue'
 import CompanyAdd from '@/views/companyview/CompanyAdd.vue'
 import CompanyEdit from '@/views/companyview/CompanyEdit.vue'
+import EditAuditor from '@/views/auditors/EditAuditor.vue'
 const routes = [
   {
     path: '/',
@@ -64,6 +65,14 @@ const routes = [
     component: AddAuditor,
     meta: {
       title: " Add Auditors"
+    }
+  },
+  {
+    path: "/auditors/edit/:id",
+    name: 'auditors-edit',
+    component: EditAuditor,
+    meta: {
+      title: " Edit Auditors"
     }
   },
   {

@@ -6,19 +6,29 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import router from '@/router'
 import axios from 'axios'
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const pageTitle = ref('Add Auditor')
+const pageTitle = ref('Edit Auditor')
 
 const first_name = ref(null)
 const last_name = ref(null)
 const phone_number = ref(null)
 const email = ref(null)
 const specializations = ref(null)
-
+const route = useRoute();
+onMounted(async ()=>{
+  await axios.get(`http://127.0.0.1:8000/auditors/edit/${route.params.id}`).then(res=>{
+    first_name.value=res.data.first_name
+    last_name.value=res.data.last_name
+    phone_number.value=res.data.phone
+    email.value=res.data.email
+    specializations.value=res.data.specializations
+  }).catch(err=>console.log(err))
+})
 const submit = async () => {
 
-  await axios.post("http://127.0.0.1:8000/auditors/add/", {
+  await axios.post(`http://127.0.0.1:8000/auditors/edit/${route.params.id}`, {
     "first_name": first_name.value,
     "last_name": last_name.value,
     "phone": phone_number.value,
@@ -41,7 +51,7 @@ const submit = async () => {
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Breadcrumb End -->
 
-    <DefaultAuthCard title="Add Auditors">
+    <DefaultAuthCard title="Edit Auditors">
       <form>
         <div class="mb-4">
           <label class="mb-2.5 block font-medium text-black dark:text-white">First Name</label>
@@ -199,7 +209,7 @@ const submit = async () => {
             type="submit"
             class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
             @click.prevent="submit()"
-          >Add Auditor</button>
+          >save changes</button>
         </div>
 
       </form>
