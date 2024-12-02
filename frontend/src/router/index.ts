@@ -14,6 +14,7 @@ import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
 import AuditorsView from '@/views/auditors/AuditorsView.vue'
 import AddAuditor from '@/views/auditors/AddAuditor.vue'
+import EditAuditor from '@/views/auditors/EditAuditor.vue'
 const routes = [
   {
     path: '/',
@@ -37,6 +38,14 @@ const routes = [
     component: AddAuditor,
     meta: {
       title: " Add Auditors"
+    }
+  },
+  {
+    path: "/auditors/edit/:id",
+    name: 'auditors-edit',
+    component: EditAuditor,
+    meta: {
+      title: " Edit Auditors"
     }
   },
   {
