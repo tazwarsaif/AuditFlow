@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import User
+from core.models import User, Auditor
 from core.models import Company
 class Appointment(models.Model):
     STATUS= (
@@ -8,7 +8,7 @@ class Appointment(models.Model):
         ("CANCEL","CANCEL")
     )
     assigned_by=models.ForeignKey(User, on_delete=models.CASCADE, related_name="assigned_appointments")
-    assigned_to=models.ForeignKey(User, on_delete=models.CASCADE, related_name="auditor_appointments")
+    assigned_to=models.ForeignKey(Auditor, on_delete=models.CASCADE, related_name="auditor_appointments")
     company=models.ForeignKey(Company, on_delete=models.CASCADE)
     start_time=models.DateTimeField(auto_now_add=False, blank=True, null=True)
     end_time=models.DateTimeField(auto_now_add=False, blank=True, null=True)

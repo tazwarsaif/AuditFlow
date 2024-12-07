@@ -18,6 +18,9 @@ import Company from '@/views/companyview/Company.vue'
 import CompanyAdd from '@/views/companyview/CompanyAdd.vue'
 import CompanyEdit from '@/views/companyview/CompanyEdit.vue'
 import EditAuditor from '@/views/auditors/EditAuditor.vue'
+import AppointmentsView from '@/views/appointments/AppointmentsView.vue'
+import AddAppointment from '@/views/appointments/AddAppointment.vue'
+
 const routes = [
   {
     path: '/',
@@ -25,6 +28,22 @@ const routes = [
     component: ECommerceView,
     meta: {
       title: 'eCommerce Dashboard'
+    }
+  },
+  {
+    path: "/appointments",
+    name: 'appointments-view',
+    component: AppointmentsView,
+    meta: {
+      title: "Appointments"
+    }
+  },
+  {
+    path: "/appointments/add",
+    name: 'appointments-add',
+    component: AddAppointment,
+    meta: {
+      title: "Add Appointments"
     }
   },
   {

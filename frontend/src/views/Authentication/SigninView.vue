@@ -22,7 +22,7 @@ const login = async () => {
     const key = res.data.key
     localStorage.setItem('token', key)
 
-    router.push({name: 'eCommerce'})
+    router.push({name: 'appointments-view'})
 
   }).catch(err => {
     console.log(err)
