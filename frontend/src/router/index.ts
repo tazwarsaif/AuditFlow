@@ -20,6 +20,7 @@ import CompanyEdit from '@/views/companyview/CompanyEdit.vue'
 import EditAuditor from '@/views/auditors/EditAuditor.vue'
 import AppointmentsView from '@/views/appointments/AppointmentsView.vue'
 import AddAppointment from '@/views/appointments/AddAppointment.vue'
+import RescheduleRequest from '@/views/appointments/RescheduleRequest.vue'
 
 const routes = [
   {
@@ -44,6 +45,14 @@ const routes = [
     component: AddAppointment,
     meta: {
       title: "Add Appointments"
+    }
+  },
+  {
+    path: "/appointments/reschedule",
+    name: 'appointments-reschedule',
+    component: RescheduleRequest,
+    meta: {
+      title: "Reschedule Appointment"
     }
   },
   {

@@ -14,6 +14,9 @@ class Appointment(models.Model):
     end_time=models.DateTimeField(auto_now_add=False, blank=True, null=True)
     status = models.CharField(max_length=20, default="CONFIRM")
 
+    def __str__(self):
+        return f"{self.company.name}: {self.start_time.date()} to {self.end_time.date()}"
+
 
 class AppointmentRescheduleRequest(models.Model):
     status = (

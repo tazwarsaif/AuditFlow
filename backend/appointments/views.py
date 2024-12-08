@@ -14,8 +14,12 @@ from .serializer import RescheduleRequestSerializer, AppointmentSerializer, Appo
 @permission_classes([AllowAny])
 def request_reschedule(request):
     if request.method == 'POST':
+        app = Appointment.objects.filter(pk=request.data['appointment']).first()
+        admin = app.assigned_by
         serializer = RescheduleRequestSerializer(data = request.data)
         if serializer.is_valid():
+            serializer.validated_data['sent_to'] = admin
+            serializer.validated_data['sent_by'] = request.user
             serializer.save()
             return Response({'data': 'Request has been successfully submitted.'}, 201)
         else:
