@@ -22,6 +22,7 @@ import AppointmentsView from '@/views/appointments/AppointmentsView.vue'
 import AddAppointment from '@/views/appointments/AddAppointment.vue'
 import RescheduleRequest from '@/views/appointments/RescheduleRequest.vue'
 import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
+import NotificationsView from '@/views/notifications/NotificationsView.vue'
 const routes = [
   {
     path: '/',
@@ -101,6 +102,14 @@ const routes = [
     component: EditAuditor,
     meta: {
       title: " Edit Auditors"
+    }
+  },
+  {
+    path: "/notifications",
+    name: 'notifications-view',
+    component: NotificationsView,
+    meta: {
+      title: "Notifications"
     }
   },
   {

@@ -2,6 +2,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+
+from appointments.models import AppointmentRescheduleRequest
+from appointments.serializer import RescheduleRequestViewSerializer
 from .models import Company, Auditor
 from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer
 
@@ -123,3 +126,33 @@ def delete_auditors(request,id):
     audi=Auditor.objects.get(pk=id)
     audi.delete()
     return Response({'data':'deleted successfully'})
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def notifications(request):
+    # TODO: change to requests that are only upcoming i.e. s_s_d > curr_time
+    reschedule_requests = AppointmentRescheduleRequest.objects.all()
+    serializer = RescheduleRequestViewSerializer(instance=reschedule_requests, many=True)
+    return Response(serializer.data, 200)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def accept_reschedule_req(request, r_id):
+    reschedule_request = AppointmentRescheduleRequest.objects.filter(pk=r_id).first()
+    appointment = reschedule_request.appointment
+    appointment.start_time = reschedule_request.suggested_start_time
+    appointment.end_time = reschedule_request.suggested_end_time
+    appointment.save()
+    reschedule_request.delete()
+    return Response({"data": "appointment updated successfully"}, 200)
+
+
+@api_view(['DELETE'])
+@permission_classes([AllowAny])
+def del_notifications(request, r_id):
+    reschedule_requests = AppointmentRescheduleRequest.objects.filter(pk=r_id).first()
+    reschedule_requests.delete()
+    return Response({"data": "deleted successfully"}, 200)
+

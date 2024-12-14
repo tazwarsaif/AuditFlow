@@ -40,7 +40,7 @@ class Company(models.Model):
     contract_expiration = models.DateField(auto_now_add=False, blank=True, null=True)
 
 
-class Audit(models.model):
+class Audit(models.Model):
     STATUS = (
         ('COMPLETED',"COMPLETED"),
         ("PENDING","PENDING")
@@ -49,7 +49,8 @@ class Audit(models.model):
     start_time = models.DateTimeField(auto_now_add=False)
     end_time = models.DateTimeField(auto_now_add=False)
 
-class Payment(models.model):
+
+class Payment(models.Model):
     STATUS = (
         ('PAID',"PAID"),
         ("PENDING","PENDING"),
