@@ -13,7 +13,12 @@ def register_admin(request):
     if request.method == 'POST':
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+
+            user = serializer.save()
+            if request.data.get('auditor_id') is not None:
+                auditor = Auditor.objects.filter(pk=request.data.get('auditor_id')).first()
+                auditor.user = user
+                auditor.save()
             return Response({"data": "User has been created successfully"}, 201)
         else:
             return Response(serializer.errors, 400)
