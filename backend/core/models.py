@@ -38,3 +38,24 @@ class Company(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     contract_expiration = models.DateField(auto_now_add=False, blank=True, null=True)
+
+
+class Audit(models.model):
+    STATUS = (
+        ('COMPLETED',"COMPLETED"),
+        ("PENDING","PENDING")
+    )
+    auditor = models.ForeignKey(Auditor,null=True, blank=True, on_delete=models.SET_NULL)
+    start_time = models.DateTimeField(auto_now_add=False)
+    end_time = models.DateTimeField(auto_now_add=False)
+
+class Payment(models.model):
+    STATUS = (
+        ('PAID',"PAID"),
+        ("PENDING","PENDING"),
+        ("OVERDUE","OVERDUE")
+    )
+    audit = models.ForeignKey(Audit,null=True, blank=True, on_delete=models.SET_NULL)
+    due_date = models.DateTimeField(auto_now_add=False)
+    pay_date = models.DateTimeField(auto_now_add=False)
+    amount = models.DecimalField(max_digits=19, decimal_places=2)

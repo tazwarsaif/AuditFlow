@@ -36,8 +36,10 @@ onMounted(() =>{
     <!-- Breadcrumb Start -->
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Breadcrumb End -->
-
-    <RouterLink class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" :to="{name: 'auditors-add'}">Add Auditor</RouterLink>
+    <div class="mb-5">
+        <RouterLink class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" :to="{name: 'auditors-add'}">Add Auditor</RouterLink>
+    </div>
+    
     <div class="flex flex-col gap-10">
         <div
         class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
