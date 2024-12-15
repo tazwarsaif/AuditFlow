@@ -45,9 +45,11 @@ class Audit(models.Model):
         ('COMPLETED',"COMPLETED"),
         ("PENDING","PENDING")
     )
+    status = models.CharField(max_length=20,choices=STATUS,default='PENDING')
     auditor = models.ForeignKey(Auditor,null=True, blank=True, on_delete=models.SET_NULL)
     start_time = models.DateTimeField(auto_now_add=False)
     end_time = models.DateTimeField(auto_now_add=False)
+    company = models.ForeignKey(Company,null=True, blank=True, on_delete=models.SET_NULL)
 
 
 class Payment(models.Model):

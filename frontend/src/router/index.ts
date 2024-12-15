@@ -23,6 +23,7 @@ import AddAppointment from '@/views/appointments/AddAppointment.vue'
 import RescheduleRequest from '@/views/appointments/RescheduleRequest.vue'
 import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
 import NotificationsView from '@/views/notifications/NotificationsView.vue'
+import AuditView from '@/views/Audit/AuditView.vue'
 const routes = [
   {
     path: '/',
@@ -54,6 +55,14 @@ const routes = [
     component: RescheduleRequest,
     meta: {
       title: "Reschedule Appointment"
+    }
+  },
+  {
+    path: "/audithistory",
+    name: 'audit-history',
+    component: AuditView,
+    meta: {
+      title: "Audit History"
     }
   },
   {

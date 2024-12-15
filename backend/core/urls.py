@@ -13,7 +13,7 @@ urlpatterns = [
     path('auditors/add/', add_Auditors),
     path('auditors/edit/<str:id>', edit_Auditors),
     path('auditors/delete/<str:id>', delete_auditors),
-
+    path("audithistory/",get_auditHistory),
     path('notifications/', notifications),
     path('reschedule/<str:r_id>/', accept_reschedule_req),
     path('notifications/delete/<str:r_id>/', del_notifications)

@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from core.models import User, Company, Auditor
+from core.models import User, Company, Auditor, Audit, Payment
 
 
 class UserCreationForm(forms.ModelForm):
@@ -114,4 +114,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register([Company])
-admin.site.register([Auditor])
+admin.site.register([Auditor,Payment,Audit])

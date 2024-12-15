@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from appointments.models import AppointmentRescheduleRequest
 from appointments.serializer import RescheduleRequestViewSerializer
-from .models import Company, Auditor
-from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer
+from .models import Company, Auditor, Audit
+from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer
 
 
 @csrf_exempt
@@ -156,3 +156,9 @@ def del_notifications(request, r_id):
     reschedule_requests.delete()
     return Response({"data": "deleted successfully"}, 200)
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_auditHistory(request):
+    audit= Audit.objects.all()
+    serializer=AuditSerializer(instance=audit, many=True)
+    return Response(serializer.data, 200)
