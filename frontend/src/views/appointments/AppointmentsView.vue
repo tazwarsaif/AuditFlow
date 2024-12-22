@@ -3,14 +3,25 @@ import { onMounted, ref } from 'vue'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import axios from 'axios';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
+import router from '@/router';
 
 const pageTitle = ref('Appointments')
 
 const appointments = ref([])
 const showModal = ref(false);
 const selectedItem = ref(null);
+const route = useRoute()
 
+const initiateAudit = (item) => {
+    axios.post(`http://127.0.0.1:8000/initial-audit/${item.id}`, {}, {
+        "headers": {
+            "Authorization": `Token ${localStorage.getItem('token')}`
+        }
+    }).then(res => {
+        router.push({'name': 'audit-details', params: {'id': res.data.id}})
+    }).catch(err => console.log(err))
+}
 const toggleModal = (item) => {
     if(showModal.value == true){
         selectedItem.value = null
@@ -102,6 +113,8 @@ const formatDate = (dateStr) => {
                 </td>
                 <td class="py-5 px-4">
                 <div class="flex items-center space-x-3.5">
+
+                    <button class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm" @click.prevent="initiateAudit(item)">Initiate</button>
 
                     <button class="hover:text-primary"  @click.prevent="toggleModal(item)">
                     <svg

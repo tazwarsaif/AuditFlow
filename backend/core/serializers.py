@@ -33,7 +33,7 @@ class AuditSerializer(serializers.ModelSerializer):
     auditor_name = serializers.SerializerMethodField()
     class Meta:
         model = Audit
-        fields = ['status','start_time','end_time','company_name','auditor_name']
+        fields = ['id', 'status','start_time','end_time','company_name','auditor_name']
     def get_company_name(self,obj):
         return obj.company.name
     def get_auditor_name(self,obj):

@@ -24,6 +24,7 @@ import RescheduleRequest from '@/views/appointments/RescheduleRequest.vue'
 import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
 import NotificationsView from '@/views/notifications/NotificationsView.vue'
 import AuditView from '@/views/Audit/AuditView.vue'
+import AuditDetails from '@/views/Audit/AuditDetails.vue'
 const routes = [
   {
     path: '/',
@@ -87,6 +88,14 @@ const routes = [
     component: CompanyEdit,
     meta: {
       title: "Edit Company"
+    }
+  },
+  {
+    path: "/audit/details/:id",
+    name: 'audit-details',
+    component: AuditDetails,
+    meta: {
+      title: "Audit Details"
     }
   },
   {

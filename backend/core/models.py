@@ -62,3 +62,9 @@ class Payment(models.Model):
     due_date = models.DateTimeField(auto_now_add=False)
     pay_date = models.DateTimeField(auto_now_add=False)
     amount = models.DecimalField(max_digits=19, decimal_places=2)
+
+
+class AuditReport(models.Model):
+    audit = models.ForeignKey(Audit,null=True, blank=True, on_delete=models.CASCADE)
+    report = models.TextField(null=True, blank=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)

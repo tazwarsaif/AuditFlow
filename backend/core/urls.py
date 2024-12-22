@@ -14,6 +14,9 @@ urlpatterns = [
     path('auditors/edit/<str:id>', edit_Auditors),
     path('auditors/delete/<str:id>', delete_auditors),
     path("audithistory/",get_auditHistory),
+    path('audit-details/<str:a_id>', audit_details),
+    path('audit-report/<str:a_id>', submit_report),
+    path('initial-audit/<str:appointment_id>', initiate_audit),
     path('notifications/', notifications),
     path('reschedule/<str:r_id>/', accept_reschedule_req),
     path('notifications/delete/<str:r_id>/', del_notifications)

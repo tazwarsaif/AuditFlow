@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from appointments.models import AppointmentRescheduleRequest
+from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
-from .models import Company, Auditor, Audit
+from .models import Company, Auditor, Audit, AuditReport
 from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer
 
 
@@ -162,3 +162,38 @@ def get_auditHistory(request):
     audit= Audit.objects.all()
     serializer=AuditSerializer(instance=audit, many=True)
     return Response(serializer.data, 200)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def audit_details(request, a_id):
+    audit= Audit.objects.filter(pk=a_id).first()
+    serializer=AuditSerializer(instance=audit)
+    return Response(serializer.data, 200)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def initiate_audit(request, appointment_id):
+    app= Appointment.objects.filter(pk=appointment_id).first()
+    audit = Audit.objects.create(
+        auditor = request.user.auditor,
+        start_time=app.start_time,
+        end_time = app.end_time,
+        company=app.company
+    )
+    serializer=AuditSerializer(instance=audit)
+    return Response(serializer.data, 200)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def submit_report(request, a_id):
+    audit = Audit.objects.filter(pk=a_id).first()
+    report = request.data.get('report')
+    print(report)
+    if report is not None:
+        AuditReport.objects.create(audit=audit, report=report)
+        audit.status = 'COMPLETED'
+        audit.save()
+    return Response({'data': 'audit has been completed'}, 200)

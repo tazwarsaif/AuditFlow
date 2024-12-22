@@ -80,6 +80,10 @@ const formatDate = (dateStr) => {
                 <td class="py-5 px-4">
                 <p class="text-black dark:text-white">{{ item.status }}</p>
                 </td>
+                <td>
+                    <RouterLink class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm"
+                        :to="{name: 'audit-details', params: {'id': item.id}}">View</RouterLink>
+                </td>
             </tr>
             </tbody>
         </table>
