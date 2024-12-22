@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import User, Company, Auditor, Audit
+from .models import User, Company, Auditor, Audit, Payment
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -38,5 +38,11 @@ class AuditSerializer(serializers.ModelSerializer):
         return obj.company.name
     def get_auditor_name(self,obj):
         return f'{obj.auditor.first_name} {obj.auditor.last_name}'
+
+class Payment(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['id', 'audit', 'due_date', 'pay_date', 'amount']
+
 
 
