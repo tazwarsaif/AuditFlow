@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import User, Company, Auditor, Audit
+from .models import User, Company, Auditor, Audit, LeaveApplication
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -39,4 +39,15 @@ class AuditSerializer(serializers.ModelSerializer):
     def get_auditor_name(self,obj):
         return f'{obj.auditor.first_name} {obj.auditor.last_name}'
 
+
+class LeaveApplicationSerializer(serializers.ModelSerializer):
+    applicant = serializers.SerializerMethodField()
+    admin = serializers.SerializerMethodField()
+
+    class Meta:
+        model = LeaveApplication
+        fields = ['applicant', 'description']
+
+    def get_applicant(self, obj):
+        return obj.sent_by.get_full_name()
 

@@ -68,3 +68,10 @@ class AuditReport(models.Model):
     audit = models.ForeignKey(Audit,null=True, blank=True, on_delete=models.CASCADE)
     report = models.TextField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+
+class LeaveApplication(models.Model):
+    # sent_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="application_requested")
+    sent_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applicants")
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

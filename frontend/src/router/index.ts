@@ -25,6 +25,7 @@ import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
 import NotificationsView from '@/views/notifications/NotificationsView.vue'
 import AuditView from '@/views/Audit/AuditView.vue'
 import AuditDetails from '@/views/Audit/AuditDetails.vue'
+import LeaveApplication from '@/views/auditors/LeaveApplication.vue'
 const routes = [
   {
     path: '/',
@@ -32,6 +33,14 @@ const routes = [
     component: ECommerceView,
     meta: {
       title: 'eCommerce Dashboard'
+    }
+  },
+  {
+    path: "/leave-application",
+    name: 'leave-application',
+    component: LeaveApplication,
+    meta: {
+      title: "Leave Application"
     }
   },
   {
