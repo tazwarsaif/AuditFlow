@@ -58,9 +58,3 @@ class LeaveApplicationSerializer(serializers.ModelSerializer):
     def get_applicant(self, obj):
         return obj.sent_by.get_full_name()
 
-
-class PerformanceReportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model= PerformanceReport
-        fields = ['auditor', 'performance_report', 'submitted_at']
-        read_only_fields=['id']
