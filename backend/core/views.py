@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
-from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport
+from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport, LeaveApplication
 from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer, PaymentSerializer, PerformanceReportSerializer
 
 
@@ -236,3 +236,45 @@ def performancereport(request,id):
     serializer = PerformanceReportSerializer(instance=performancereport, many=True)
     return Response({'data': serializer.data, 'auditor_info':AuditorManagementSerializer(instance=auditor).data}, 200)
 
+
+
+
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def edit_auditor_profile(request):
+    user = request.user
+    auditor = Auditor.objects.get(user=user)
+    if request.method== "GET":
+        serializer=AuditorManagementSerializer(instance=auditor,many= False)
+        return Response(serializer.data, 200)
+    if request.method == 'POST':
+        serializer=AuditorManagementSerializer(data=request.data, instance=auditor)
+        if serializer.is_valid():
+            serializer.save()
+
+            user.first_name = serializer.validated_data.get('first_name')
+            user.last_name = serializer.validated_data.get('last_name')
+            user.email = serializer.validated_data.get('email')
+            user.phone = serializer.validated_data.get('phone')
+            user.save()
+
+            return Response({'data':'changes saved successfully'}, 200)
+        else:
+            return Response(serializer.errors, 400)
+
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def submit_leave_application(request):
+    user = request.user
+    if request.method == 'POST':
+        desc = request.data.get('description')
+        if desc is not None:
+            LeaveApplication.objects.create(
+                sent_by=user,
+                description=desc
+            )
+            return Response({'data':'changes saved successfully'}, 200)
+        else:
+            return Response({'data':'desc cannot be none'}, 400)

@@ -21,6 +21,10 @@ urlpatterns = [
     path('notifications/', notifications),
     path('reschedule/<str:r_id>/', accept_reschedule_req),
     path('notifications/delete/<str:r_id>/', del_notifications),
+
+    path('get-auditor-profile/', edit_auditor_profile),
+    path('leave-application/', submit_leave_application)
+    path('notifications/delete/<str:r_id>/', del_notifications),
     path('payments/', payment),
     path('payments/add/', add_payment)
 ]

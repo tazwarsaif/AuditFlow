@@ -26,6 +26,7 @@ import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
 import NotificationsView from '@/views/notifications/NotificationsView.vue'
 import AuditView from '@/views/Audit/AuditView.vue'
 import AuditDetails from '@/views/Audit/AuditDetails.vue'
+import LeaveApplication from '@/views/auditors/LeaveApplication.vue'
 import PaymentsView from '@/views/payment/PaymentsView.vue'
 import AddPayment from '@/views/payment/AddPayment.vue'
 const routes = [
@@ -35,6 +36,14 @@ const routes = [
     component: ECommerceView,
     meta: {
       title: 'eCommerce Dashboard'
+    }
+  },
+  {
+    path: "/leave-application",
+    name: 'leave-application',
+    component: LeaveApplication,
+    meta: {
+      title: "Leave Application"
     }
   },
   {
