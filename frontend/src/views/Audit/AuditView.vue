@@ -5,7 +5,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
 
-const pageTitle = ref('Auditors')
+const pageTitle = ref('Audit History')
 
 const auditors = ref([])
 const showModal = ref(false);

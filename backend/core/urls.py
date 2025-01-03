@@ -10,6 +10,7 @@ urlpatterns = [
     path('company/delete/<str:id>',delete_company),
     path('company/add/',add_company),
     path('auditors/', get_auditors),
+    path('auditors/performancereport/<str:id>', performancereport),
     path('auditors/add/', add_Auditors),
     path('auditors/edit/<str:id>', edit_Auditors),
     path('auditors/delete/<str:id>', delete_auditors),
@@ -19,5 +20,7 @@ urlpatterns = [
     path('initial-audit/<str:appointment_id>', initiate_audit),
     path('notifications/', notifications),
     path('reschedule/<str:r_id>/', accept_reschedule_req),
-    path('notifications/delete/<str:r_id>/', del_notifications)
+    path('notifications/delete/<str:r_id>/', del_notifications),
+    path('payments/', payment),
+    path('payments/add/', add_payment)
 ]

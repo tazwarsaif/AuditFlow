@@ -13,6 +13,7 @@ import TablesView from '@/views/TablesView.vue'
 import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
 import AuditorsView from '@/views/auditors/AuditorsView.vue'
+import AuditorPerformanceReport from '@/views/auditors/AuditorPerformanceReport.vue'
 import AddAuditor from '@/views/auditors/AddAuditor.vue'
 import Company from '@/views/companyview/Company.vue'
 import CompanyAdd from '@/views/companyview/CompanyAdd.vue'
@@ -25,6 +26,8 @@ import AuditorsSignupView from "@/views/Authentication/AuditorsSignupView.vue"
 import NotificationsView from '@/views/notifications/NotificationsView.vue'
 import AuditView from '@/views/Audit/AuditView.vue'
 import AuditDetails from '@/views/Audit/AuditDetails.vue'
+import PaymentsView from '@/views/payment/PaymentsView.vue'
+import AddPayment from '@/views/payment/AddPayment.vue'
 const routes = [
   {
     path: '/',
@@ -104,6 +107,14 @@ const routes = [
     component: AuditorsView,
     meta: {
       title: "Auditors"
+    }
+  },
+  {
+    path: "/auditors/performancereport/:id",
+    name: 'performance-view',
+    component: AuditorPerformanceReport,
+    meta: {
+      title: "Auditor's Performance Report"
     }
   },
   {
@@ -225,6 +236,24 @@ const routes = [
 
     meta: {
       title: 'Auditor Signup'
+    }
+  },
+  {
+    path: '/payments',
+    name: 'payments',
+    component: PaymentsView,
+
+    meta: {
+      title: 'Payments'
+    }
+  },
+  {
+    path: '/payments/add',
+    name: 'add-payment',
+    component: AddPayment,
+
+    meta: {
+      title: 'Add Payment'
     }
   }
 ]

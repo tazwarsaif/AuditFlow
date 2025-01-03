@@ -5,7 +5,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
 
-const pageTitle = ref('Auditors')
+const pageTitle = ref('Audit Payments')
 
 const auditors = ref([])
 const showModal = ref(false);
@@ -21,14 +21,19 @@ const toggleModal = (item) => {
     }
 }
 
-const deleteItem = (id) => {
-    axios.delete(`http://127.0.0.1:8000/auditors/delete/${id}`).then(res=> {
-        location.reload()
-    }).catch(err => console.log(err))
-}
 onMounted(() =>{
-    axios.get('http://127.0.0.1:8000/auditors/').then(response => auditors.value=response.data).catch(err => console.log(err))
+    axios.get('http://127.0.0.1:8000/payments/')
+    .then((response) => {
+        auditors.value=response.data
+        console.log(response.data)
+    })
+    .catch(err => console.log(err))
 })
+
+const formatDate = (dateStr) => {
+    let obj = new Date(dateStr);
+    return `${obj.toLocaleDateString()} ${obj.toLocaleTimeString()}`
+}
 </script>
 
 <template>
@@ -37,7 +42,7 @@ onMounted(() =>{
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Breadcrumb End -->
     <div class="mb-5">
-        <RouterLink class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" :to="{name: 'auditors-add'}">Add Auditor</RouterLink>
+        <RouterLink class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" :to="{name: 'add-payment'}">Add Payment</RouterLink>
     </div>
     
     <div class="flex flex-col gap-10">
@@ -48,38 +53,37 @@ onMounted(() =>{
         <table class="w-full table-auto">
             <thead>
             <tr class="bg-gray-2 text-left dark:bg-meta-4">
-                <th class="min-w-[190px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                First Name
+                <th class="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                Company Name
                 </th>
-                <th class="min-w-[190px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Last Name
+                <th class="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                Due Date
                 </th>
-                <th class="min-w-[130px] py-4 px-4 font-medium text-black dark:text-white">
-                Email
+                <th class="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Pay date
                 </th>
-                <th class="min-w-[110px] py-4 px-4 font-medium text-black dark:text-white">Phone</th>
-                <th class="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Specializations</th>
-                <th class="py-4 px-4 font-medium text-black dark:text-white">Actions</th>
-                <th class="py-4 px-4 font-medium text-black dark:text-white">Performance Report</th>
+                <th class="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Amount</th>
+                <th class="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Status</th>
+                <th class="py-4 px-4 font-medium text-black dark:text-white">Deletion</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item, index) in auditors" :key="index">
                 <td class="py-5 px-4 pl-9 xl:pl-11">
-                <h5 class="font-medium text-black dark:text-white">{{ item.first_name }}</h5>
+                <h5 class="font-medium text-black dark:text-white">{{ item.audit_name.split("at")[0] }}</h5>
                 </td>
                 <td class="py-5 px-4 pl-9 xl:pl-11">
-                <h5 class="font-medium text-black dark:text-white">{{ item.last_name }}</h5>
+                <h5 class="font-medium text-black dark:text-white">{{ formatDate(item.due_date) }}</h5>
                 </td>
                 <td class="py-5 px-4">
-                <p class="text-black dark:text-white">{{ item.email }}</p>
+                <p class="text-black dark:text-white">{{ formatDate(item.pay_date) }}</p>
                 </td>
                 <td class="py-5 px-4">
-                <p class="text-black dark:text-white">{{ item.phone }}</p>
+                <p class="text-black dark:text-white">{{ item.amount }}</p>
                 </td>
                 <td class="py-5 px-4">
                 <p>
-                    {{ item.specializations }}
+                    {{ item.status }}
                 </p>
                 </td>
                 <td class="py-5 px-4">
@@ -162,14 +166,6 @@ onMounted(() =>{
                         </div>
                         <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
                 </div>
-                </td>
-                <td class="py-5 px-9">
-                    <div class="flex items-center space-x-3.5">
-                    <RouterLink :to="{name:'performance-view',params:{id:item.id}}" class="hover:text-primary
-                    text-center">
-                        View
-                    </RouterLink>
-                    </div>
                 </td>
             </tr>
             </tbody>

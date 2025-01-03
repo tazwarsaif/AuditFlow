@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
-from .models import Company, Auditor, Audit, AuditReport
-from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer
+from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport
+from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer, PaymentSerializer, PerformanceReportSerializer
 
 
 @csrf_exempt
@@ -197,3 +197,42 @@ def submit_report(request, a_id):
         audit.status = 'COMPLETED'
         audit.save()
     return Response({'data': 'audit has been completed'}, 200)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def payment(request):
+    payments = Payment.objects.all()
+    serializer = PaymentSerializer(instance=payments, many=True)
+    return Response(serializer.data, 200)
+
+
+@api_view(['GET', "POST"])
+@permission_classes([AllowAny])
+def add_payment(request):
+    if request.method== "POST":
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': 'changes saved successfully'}, 200)
+        else:
+            return Response(serializer.errors, 400)
+    payments = Payment.objects.all()
+    serializer = PaymentSerializer(instance=payments, many=True)
+    return Response({'data': serializer.data}, 200)
+
+
+@api_view(['GET',"POST"])
+@permission_classes([AllowAny])
+def performancereport(request,id):
+    if request.method == "POST":
+        auditor = Auditor.objects.get(pk=id)
+        report = request.data.get('report')
+        performancereport = PerformanceReport.objects.filter(auditor_id=id)
+        serializer = PerformanceReportSerializer(instance=performancereport, many=True)
+        PerformanceReport.objects.create(auditor=auditor,performance_report=report)
+        return Response({'data': serializer.data, 'auditor_info':AuditorManagementSerializer(instance=auditor).data}, 200)
+    auditor = Auditor.objects.get(pk=id)
+    performancereport = PerformanceReport.objects.filter(auditor_id=id)
+    serializer = PerformanceReportSerializer(instance=performancereport, many=True)
+    return Response({'data': serializer.data, 'auditor_info':AuditorManagementSerializer(instance=auditor).data}, 200)
+
