@@ -23,6 +23,23 @@ const statuses = ref(["PENDING", "CONFIRM", "CANCEL"])
 const data = ref([[], []])
 const route = useRoute()
 
+const download = async () => {
+  await axios.get(`http://127.0.0.1:8000/download-audit-report/${route.params.id}`, {
+    responseType: 'blob'
+  }).then(res => {
+    const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Audit_Report_${route.params.id}.pdf`); // Set the file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Clean up
+    window.URL.revokeObjectURL(url);
+  }).catch((error) => {
+        console.error('Error downloading the PDF:', error);
+    });
+}
+
 onMounted(async () => {
     try{
         const auditR = await axios.get(`http://127.0.0.1:8000/audit-details/${route.params.id}`)
@@ -80,6 +97,14 @@ const submit = async () => {
             <div class="my-5 flex gap-2">
                 <input class="form-control border border-slate-300 px-5 rounded-lg" placeholder="Update Location">
                 <button class="bg-slate-900 text-slate-50 px-3 py-2 rounded-md">Update Location</button>
+            </div>
+            <div class="mb-5 mt-6">
+              <button
+                v-if="audit?.status === 'COMPLETED'"
+                type="submit"
+                class="w-full cursor-pointer rounded-lg border border-slate-900 bg-slate-900 p-4 font-medium text-white transition hover:bg-opacity-90"
+                @click.prevent="download()"
+              >Download Report</button>
             </div>
           <label class="mb-2.5 block font-medium text-black dark:text-white" v-if="audit?.status !== 'COMPLETED'">Report</label>
           <div class="relative z-20 bg-white dark:bg-form-input" v-if="audit?.status !== 'COMPLETED'">

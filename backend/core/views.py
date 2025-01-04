@@ -1,8 +1,14 @@
+import tempfile
+from io import BytesIO
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from dj_rest_auth.views import LoginView
+from weasyprint import HTML
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
@@ -321,3 +327,50 @@ def del_payroll(request, p_id):
     payroll.delete()
     return Response({'data': 'payroll deleted'}, 200)
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def download_audit_report(request, id):
+    report = AuditReport.objects.filter(audit_id=id).first()
+
+    # Render the HTML template with data
+    html_content  = render_to_string('auditReportTemplate.html', {
+        'company': report.audit.company.name,
+        'auditor': f"{report.audit.auditor.first_name } { report.audit.auditor.last_name}",
+        'report': report.report,
+        'submitted_at': report.submitted_at
+    })
+
+    pdf_file = BytesIO()
+
+    HTML(string=html_content).write_pdf(pdf_file)
+    pdf_file.seek(0)
+
+    # Send the PDF as a response
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="report-{report.audit.company}-{report.submitted_at}.pdf"'
+    return response
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def download_invoice(request, id):
+    payment = Payment.objects.filter(pk=id).first()
+
+    # Render the HTML template with data
+    html_content = render_to_string('invoiceTemplate.html', {
+        'payment_no': f'#{payment.id:03}',
+        'due': payment.due_date.date(),
+        'company': payment.audit.company.name,
+        'to_pay': payment.amount
+    })
+
+    pdf_file = BytesIO()
+
+    HTML(string=html_content).write_pdf(pdf_file)
+    pdf_file.seek(0)
+
+    # Send the PDF as a response
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="payment_invoice-{payment.audit.company.name}.pdf"'
+    return response

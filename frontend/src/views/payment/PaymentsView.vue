@@ -21,6 +21,23 @@ const toggleModal = (item) => {
     }
 }
 
+const downloadInvoice = async (id) => {
+    await axios.get(`http://127.0.0.1:8000/download-invoice/${id}`, {
+    responseType: 'blob'
+  }).then(res => {
+    const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Invoice_000${id}.pdf`); // Set the file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Clean up
+    window.URL.revokeObjectURL(url);
+  }).catch((error) => {
+        console.error('Error downloading the PDF:', error);
+    });
+}
+
 onMounted(() =>{
     axios.get('http://127.0.0.1:8000/payments/')
     .then((response) => {
@@ -88,25 +105,9 @@ const formatDate = (dateStr) => {
                 </td>
                 <td class="py-5 px-4">
                 <div class="flex items-center space-x-3.5">
-                    <RouterLink :to="{name:'auditors-edit',params:{id:item.id}}" class="hover:text-primary">
-                    <svg
-                        class="fill-current"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                        d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                        fill=""
-                        />
-                        <path
-                        d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                        fill=""
-                        />
-                    </svg>
-                    </RouterLink>
+                    <button @click="downloadInvoice(item.id)" class="hover:text-primary">
+                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="none"><path d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"></path></svg>
+                    </button>
 
                     <button class="hover:text-primary" @click.prevent="toggleModal(item)">
                     <svg

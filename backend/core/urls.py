@@ -18,6 +18,10 @@ urlpatterns = [
     path("audithistory/",get_auditHistory),
     path('audit-details/<str:a_id>', audit_details),
     path('audit-report/<str:a_id>', submit_report),
+
+    path('download-audit-report/<str:id>/', download_audit_report),
+    path('download-invoice/<str:id>/', download_invoice),
+
     path('initial-audit/<str:appointment_id>', initiate_audit),
     path('notifications/', notifications),
     path('reschedule/<str:r_id>/', accept_reschedule_req),
