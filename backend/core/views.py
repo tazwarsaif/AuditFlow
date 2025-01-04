@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from dj_rest_auth.views import LoginView
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
@@ -279,6 +280,25 @@ def submit_leave_application(request):
             return Response({'data':'changes saved successfully'}, 200)
         else:
             return Response({'data':'desc cannot be none'}, 400)
+
+
+class CustomLoginView(LoginView):
+    def get_response(self):
+        # Call the parent method to get the default response
+        original_response = super().get_response()
+
+        # Add user information to the response
+        user = self.user  # The authenticated user
+        user_data = {
+            "id": user.id,
+            "full_name": user.get_full_name(),
+            "email": user.email,
+            "type": user.user_type
+        }
+
+        # Include the user data in the response
+        original_response.data.update({"user": user_data})
+        return original_response
 
 
 @api_view(['GET','POST'])

@@ -27,9 +27,15 @@ def request_reschedule(request):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_appointments(request):
-    appointments = Appointment.objects.all().order_by('start_time')
+    user = request.user
+    print(user.user_type)
+    if user.user_type == 'ADMIN':
+        appointments = Appointment.objects.all().order_by('start_time')
+    else:
+        auditor = user.auditor
+        appointments = Appointment.objects.filter(assigned_to=auditor).order_by('start_time')
     serializer = AppointmentSerializer(instance=appointments, many=True)
     return Response(serializer.data, 200)
 

@@ -81,14 +81,14 @@ const submit = async () => {
                 <input class="form-control border border-slate-300 px-5 rounded-lg" placeholder="Update Location">
                 <button class="bg-slate-900 text-slate-50 px-3 py-2 rounded-md">Update Location</button>
             </div>
-          <label class="mb-2.5 block font-medium text-black dark:text-white">Report</label>
-          <div class="relative z-20 bg-white dark:bg-form-input">
+          <label class="mb-2.5 block font-medium text-black dark:text-white" v-if="audit?.status !== 'COMPLETED'">Report</label>
+          <div class="relative z-20 bg-white dark:bg-form-input" v-if="audit?.status !== 'COMPLETED'">
             <textarea rows="6" v-model="report" placeholder="Report" class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"></textarea>
           </div>
         </div>
         
         <div class="mb-5 mt-6">
-          <button
+          <button  v-if="audit?.status !== 'COMPLETED'"
             type="submit"
             class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
             @click.prevent="submit()"

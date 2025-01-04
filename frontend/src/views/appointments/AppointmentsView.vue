@@ -53,6 +53,8 @@ const formatDate = (dateStr) => {
     let obj = new Date(dateStr);
     return `${obj.toLocaleDateString()} ${obj.toLocaleTimeString()}`
 }
+
+const user_type = localStorage.getItem('type')
 </script>
 
 <template>
@@ -60,7 +62,7 @@ const formatDate = (dateStr) => {
     <!-- Breadcrumb Start -->
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Breadcrumb End -->
-    <div class="mb-5">
+    <div class="mb-5" v-if="user_type == 'ADMIN'">
         <RouterLink class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" :to="{name: 'appointments-add'}">Add Appointment</RouterLink>
     </div>
     
@@ -114,9 +116,9 @@ const formatDate = (dateStr) => {
                 <td class="py-5 px-4">
                 <div class="flex items-center space-x-3.5">
 
-                    <button class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm" @click.prevent="initiateAudit(item)">Initiate</button>
+                    <button v-if="user_type === 'AUDITOR'" class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm" @click.prevent="initiateAudit(item)">Initiate</button>
 
-                    <button class="hover:text-primary"  @click.prevent="toggleModal(item)">
+                    <button class="hover:text-primary"  @click.prevent="toggleModal(item)" v-if="user_type === 'ADMIN'">
                     <svg
                         class="fill-current"
                         width="18"

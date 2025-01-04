@@ -15,12 +15,14 @@ const password = ref(null)
 
 const login = async () => {
 
-  await axios.post("http://127.0.0.1:8000/auth/login/", {
+  await axios.post("http://127.0.0.1:8000/auth/signin/", {
     "email": email.value,
     "password": password.value
   }).then(res => {
     const key = res.data.key
     localStorage.setItem('token', key)
+    localStorage.setItem('full_name', res.data.user.full_name)
+    localStorage.setItem('type', res.data.user.type)
 
     router.push({name: 'appointments-view'})
 

@@ -86,7 +86,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = [
         (
             None,
-            {"fields": ["first_name", "last_name", "phone", "email", "username"]}
+            {"fields": ["first_name", "last_name", "phone", "email", "username", 'user_type']}
         ),
         (
             "Password Change",

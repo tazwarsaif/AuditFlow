@@ -22,7 +22,11 @@ const toggleModal = (item) => {
 }
 
 onMounted(() =>{
-    axios.get('http://127.0.0.1:8000/audithistory/').then(response => auditors.value=response.data).catch(err => console.log(err))
+    axios.get('http://127.0.0.1:8000/audithistory/', {
+        headers: {
+            Authorization: `Token ${localStorage.getItem('token')}`
+        }
+    }).then(response => auditors.value=response.data).catch(err => console.log(err))
 })
 
 const formatDate = (dateStr) => {

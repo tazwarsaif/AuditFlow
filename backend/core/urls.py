@@ -3,6 +3,7 @@ from django.urls import path,include
 from .views import *
 
 urlpatterns = [
+    path('auth/signin/', CustomLoginView.as_view(), name='custom-login'),
     path('auth/register/', register_admin),
     path('company/add/',companyCreation),
     path('company/',get_companies),
