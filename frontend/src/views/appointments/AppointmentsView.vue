@@ -116,7 +116,7 @@ const user_type = localStorage.getItem('type')
                 <td class="py-5 px-4">
                 <div class="flex items-center space-x-3.5">
 
-                    <button v-if="user_type === 'AUDITOR'" class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm" @click.prevent="initiateAudit(item)">Initiate</button>
+                    <button v-if="user_type === 'AUDITOR' && !item.audit_initiated" class="text-emerald-50 bg-emerald-500 rounded-sm px-2 py-2 text-sm" @click.prevent="initiateAudit(item)">Initiate</button>
 
                     <button class="hover:text-primary"  @click.prevent="toggleModal(item)" v-if="user_type === 'ADMIN'">
                     <svg

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from core.models import Audit
 from core.serializers import CompanyInfoSerializer
 from .models import Appointment, AppointmentRescheduleRequest
 
@@ -8,10 +9,11 @@ class AppointmentSerializer(serializers.ModelSerializer):
     company = CompanyInfoSerializer()
     assignee = serializers.SerializerMethodField()
     assigned = serializers.SerializerMethodField()
+    audit_initiated = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointment
-        fields = ['id', "assignee", "assigned", 'assigned_by', 'assigned_to', "company", "start_time", "end_time", "status"]
+        fields = ['id', "assignee", 'audit_initiated', "assigned", 'assigned_by', 'assigned_to', "company", "start_time", "end_time", "status"]
         read_only_fields = ['id']
 
     def get_assignee(self, obj):
@@ -19,6 +21,14 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def get_assigned(self, obj):
         return f"{obj.assigned_to.first_name} {obj.assigned_to.last_name}"
+
+    def get_audit_initiated(self, obj):
+        return Audit.objects.filter(
+            auditor=obj.assigned_to,
+            company=obj.company,
+            start_time=obj.start_time,
+            end_time=obj.end_time
+        ).exists()
 
 
 class AppointmentCreationSerializer(serializers.ModelSerializer):
