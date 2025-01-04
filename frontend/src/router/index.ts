@@ -29,6 +29,9 @@ import AuditDetails from '@/views/Audit/AuditDetails.vue'
 import LeaveApplication from '@/views/auditors/LeaveApplication.vue'
 import PaymentsView from '@/views/payment/PaymentsView.vue'
 import AddPayment from '@/views/payment/AddPayment.vue'
+import PayrollView from "@/views/payroll/PayrollView.vue"
+import AddPayroll from "@/views/payroll/AddPayroll.vue"
+
 const routes = [
   {
     path: '/',
@@ -140,6 +143,22 @@ const routes = [
     component: EditAuditor,
     meta: {
       title: " Edit Auditors"
+    }
+  },
+  {
+    path: "/payroll",
+    name: 'payrolls',
+    component: PayrollView,
+    meta: {
+      title: "Payroll"
+    }
+  },
+  {
+    path: "/payroll-add",
+    name: 'payrolls-add',
+    component: AddPayroll,
+    meta: {
+      title: "Add Payroll"
     }
   },
   {

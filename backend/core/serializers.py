@@ -67,7 +67,10 @@ class PerformanceReportSerializer(serializers.ModelSerializer):
 
 
 class PayrollSerializer(serializers.ModelSerializer):
+    auditor_name = serializers.SerializerMethodField()
     class Meta:
         model = Payroll
-        fields = ['id', 'auditor', 'salary', 'paid_at']
-        read_only_fields=['id']
+        fields = ['id', 'auditor', 'auditor_name', 'salary', 'paid_at']
+        read_only_fields=['id', 'auditor_name']
+    def get_auditor_name(self, obj):
+        return f'{obj.auditor.first_name} {obj.auditor.last_name}'
