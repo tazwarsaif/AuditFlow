@@ -5,8 +5,9 @@ from rest_framework.response import Response
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
 from appointments.serializer import RescheduleRequestViewSerializer
-from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport, LeaveApplication
-from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, AuditSerializer, PaymentSerializer, PerformanceReportSerializer
+from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport, LeaveApplication, Payroll
+from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, \
+    AuditSerializer, PaymentSerializer, PerformanceReportSerializer, PayrollSerializer
 
 
 @csrf_exempt
@@ -278,3 +279,25 @@ def submit_leave_application(request):
             return Response({'data':'changes saved successfully'}, 200)
         else:
             return Response({'data':'desc cannot be none'}, 400)
+
+
+@api_view(['GET','POST'])
+@permission_classes([AllowAny])
+def payroll(request):
+    payrolls = Payroll.objects.all().order_by('-created_at')
+    serializer = PayrollSerializer(instance=payrolls, many=True)
+    if request.method == 'POST':
+        serializer = PayrollSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': 'payroll created'}, 201)
+    return Response(serializer.data, 200)
+
+
+@api_view(['DELETE'])
+@permission_classes([AllowAny])
+def del_payroll(request, p_id):
+    payroll = Payroll.objects.filter(pk=p_id).first()
+    payroll.delete()
+    return Response({'data': 'payroll deleted'}, 200)
+

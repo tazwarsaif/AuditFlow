@@ -26,5 +26,8 @@ urlpatterns = [
     path('leave-application/', submit_leave_application),
     path('notifications/delete/<str:r_id>/', del_notifications),
     path('payments/', payment),
-    path('payments/add/', add_payment)
+    path('payments/add/', add_payment),
+
+    path('payroll/', payroll),
+    path('payroll-del/<str:p_id>/', del_payroll)
 ]
