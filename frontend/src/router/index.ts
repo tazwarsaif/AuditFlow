@@ -34,14 +34,6 @@ import AddPayroll from "@/views/payroll/AddPayroll.vue"
 
 const routes = [
   {
-    path: '/',
-    name: 'eCommerce',
-    component: ECommerceView,
-    meta: {
-      title: 'eCommerce Dashboard'
-    }
-  },
-  {
     path: "/leave-application",
     name: 'leave-application',
     component: LeaveApplication,
@@ -50,7 +42,7 @@ const routes = [
     }
   },
   {
-    path: "/appointments",
+    path: "/",
     name: 'appointments-view',
     component: AppointmentsView,
     meta: {
@@ -170,75 +162,11 @@ const routes = [
     }
   },
   {
-    path: '/calendar',
-    name: 'calendar',
-    component: CalendarView,
-    meta: {
-      title: 'Calendar'
-    }
-  },
-  {
     path: '/profile',
     name: 'profile',
     component: ProfileView,
     meta: {
       title: 'Profile'
-    }
-  },
-  {
-    path: '/forms/form-elements',
-    name: 'formElements',
-    component: FormElementsView,
-    meta: {
-      title: 'Form Elements'
-    }
-  },
-  {
-    path: '/forms/form-layout',
-    name: 'formLayout',
-    component: FormLayoutView,
-    meta: {
-      title: 'Form Layout'
-    }
-  },
-  {
-    path: '/tables',
-    name: 'tables',
-    component: TablesView,
-    meta: {
-      title: 'Tables'
-    }
-  },
-  {
-    path: '/pages/settings',
-    name: 'settings',
-    component: SettingsView,
-    meta: {
-      title: 'Settings'
-    }
-  },
-  {
-    path: '/charts/basic-chart',
-    name: 'basicChart',
-    component: BasicChartView,
-    meta: {
-      title: 'Basic Chart'
-    }
-  },
-  {
-    path: '/ui-elements/alerts',
-    name: 'alerts',
-    component: AlertsView,
-    meta: {
-      title: 'Alerts'
-    }
-  },
-  {
-    path: '/ui-elements/buttons',
-    name: 'buttons',
-    component: ButtonsView,
-    meta: {
-      title: 'Buttons'
     }
   },
   {
