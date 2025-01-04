@@ -30,6 +30,13 @@ const deleteItem = (id) => {
 onMounted(() =>{
     axios.get('http://127.0.0.1:8000/company/').then(response => company.value=response.data).catch(err => console.log(err))
 })
+
+const diff = (date) => {
+    const now = new Date()
+    const dateObj = new Date(date)
+    const diffDays = Math.floor((dateObj - now) / (1000 * 60 * 60 * 24));
+    return diffDays;
+}
 </script>
 
 <template>
@@ -74,6 +81,9 @@ onMounted(() =>{
                 <p>
                     {{ item.contract_expiration }}
                 </p>
+                <div v-if="diff(item.contract_expiration) < 8 " class="inline-block py-2 px-3 bg-rose-200 text-rose-600 rounded-md text-sm">
+                        {{ diff(item.contract_expiration) }} Days Left
+                </div>
                 </td>
                 <td class="py-5 px-4">
                 <div class="flex items-center space-x-3.5">
