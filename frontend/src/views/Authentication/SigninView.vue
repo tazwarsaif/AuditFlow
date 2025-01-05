@@ -12,6 +12,7 @@ const pageTitle = ref('Sign In')
 
 const email = ref(null)
 const password = ref(null)
+const errors = ref([])
 
 const login = async () => {
 
@@ -27,7 +28,14 @@ const login = async () => {
     router.push({name: 'appointments-view'})
 
   }).catch(err => {
-    console.log(err)
+    errors.value = []
+    Object.entries(err.response.data).forEach(([key, block]) => {
+      block.forEach(element => {
+        errors.value.push(`${key}: ${element}`)
+      });
+    });
+
+    console.log(errors.value)
   })
 }
 
@@ -40,6 +48,11 @@ const login = async () => {
     <!-- Breadcrumb End -->
 
     <DefaultAuthCard title="Sign In to AuditFlow">
+      <div class="w-4/5 mx-auto bg-rose-500 text-zinc-50 py-4 rounded-lg" v-if="errors.length > 0">
+        <ul class="pl-5">
+          <li v-for="(e, idx) in errors" :key="idx">{{e}}</li>
+        </ul>
+      </div>
       <form>
         <div class="mb-4">
           <label class="mb-2.5 block font-medium text-black dark:text-white">Email</label>

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Audit
+from core.models import Audit, LeaveApplication
 from core.serializers import CompanyInfoSerializer
 from .models import Appointment, AppointmentRescheduleRequest
 
@@ -59,4 +59,15 @@ class RescheduleRequestViewSerializer(serializers.ModelSerializer):
         }
 
     def get_request_sent_by(self, obj):
+        return obj.sent_by.get_full_name()
+
+
+class LeaveAppSerializer(serializers.ModelSerializer):
+    auditor = serializers.SerializerMethodField()
+
+    class Meta:
+        model = LeaveApplication
+        fields = ['id', 'auditor', 'description', 'created_at']
+
+    def get_auditor(self, obj):
         return obj.sent_by.get_full_name()

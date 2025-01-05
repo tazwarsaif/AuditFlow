@@ -11,7 +11,7 @@ from dj_rest_auth.views import LoginView
 from weasyprint import HTML
 
 from appointments.models import AppointmentRescheduleRequest, Appointment
-from appointments.serializer import RescheduleRequestViewSerializer
+from appointments.serializer import RescheduleRequestViewSerializer, LeaveAppSerializer
 from .models import Company, Auditor, Audit, AuditReport, Payment, PerformanceReport, LeaveApplication, Payroll
 from .serializers import UserRegistrationSerializer, CompanyInfoSerializer, AuditorManagementSerializer, \
     AuditSerializer, PaymentSerializer, PerformanceReportSerializer, PayrollSerializer
@@ -286,6 +286,29 @@ def submit_leave_application(request):
             return Response({'data':'changes saved successfully'}, 200)
         else:
             return Response({'data':'desc cannot be none'}, 400)
+
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def admin_leave_application(request):
+    if request.method == 'GET':
+        applications = LeaveApplication.objects.all()
+        serializer = LeaveAppSerializer(instance=applications, many=True)
+        return Response(serializer.data, 200)
+    if request.method == 'POST':
+        id = request.data.get('id')
+        action = request.data.get('action')
+        app = LeaveApplication.objects.filter(pk=id).first()
+        if action == 'ACCEPT':
+            auditor = Auditor.objects.filter(user=app.sent_by).first()
+            auditor.status = 'OFFLINE'
+            auditor.save()
+            app.delete()
+        else:
+            app.delete()
+
+        return Response({'data': 'application resolved'}, 200)
+
 
 
 class CustomLoginView(LoginView):

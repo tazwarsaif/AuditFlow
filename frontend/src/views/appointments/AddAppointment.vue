@@ -19,6 +19,7 @@ const status = ref("PENDING")
 const statuses = ref(["PENDING", "CONFIRM", "CANCEL"])
 
 const data = ref([[], []])
+const errors = ref([])
 
 onMounted(async () => {
     try{
@@ -49,7 +50,7 @@ const submit = async () => {
         router.push({name: 'appointments-view'})
 
     }).catch(err => {
-        console.log(err)
+        errors.value.push(err.response.data.data)
     })
 }
 
@@ -62,6 +63,11 @@ const submit = async () => {
     <!-- Breadcrumb End -->
 
     <DefaultAuthCard title="Add Appointment">
+      <div class="w-4/5 mx-auto bg-rose-500 text-zinc-50 py-4 rounded-lg" v-if="errors.length > 0">
+        <ul class="pl-5">
+          <li v-for="(e, idx) in errors" :key="idx">{{e}}</li>
+        </ul>
+      </div>
       <form>
         <div class="mb-4">
           <label class="mb-2.5 block font-medium text-black dark:text-white">Company</label>

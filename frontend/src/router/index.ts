@@ -22,6 +22,7 @@ import PaymentsView from '@/views/payment/PaymentsView.vue'
 import AddPayment from '@/views/payment/AddPayment.vue'
 import PayrollView from "@/views/payroll/PayrollView.vue"
 import AddPayroll from "@/views/payroll/AddPayroll.vue"
+import AdminLeaveApplicationVue from '@/views/AdminLeaveApplication.vue'
 
 const routes = [
   {
@@ -29,7 +30,17 @@ const routes = [
     name: 'leave-application',
     component: LeaveApplication,
     meta: {
-      title: "Leave Application"
+      title: "Leave Application",
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/leave-applications",
+    name: 'leave-applications-admin',
+    component: AdminLeaveApplicationVue,
+    meta: {
+      title: "Admin Leave Application",
+      requiresAuth: true
     }
   },
   {
@@ -37,7 +48,8 @@ const routes = [
     name: 'appointments-view',
     component: AppointmentsView,
     meta: {
-      title: "Appointments"
+      title: "Appointments",
+      requiresAuth: true
     }
   },
   {
@@ -45,7 +57,8 @@ const routes = [
     name: 'appointments-add',
     component: AddAppointment,
     meta: {
-      title: "Add Appointments"
+      title: "Add Appointments",
+      requiresAuth: true
     }
   },
   {
@@ -53,7 +66,8 @@ const routes = [
     name: 'appointments-reschedule',
     component: RescheduleRequest,
     meta: {
-      title: "Reschedule Appointment"
+      title: "Reschedule Appointment",
+      requiresAuth: true
     }
   },
   {
@@ -61,7 +75,8 @@ const routes = [
     name: 'audit-history',
     component: AuditView,
     meta: {
-      title: "Audit History"
+      title: "Audit History",
+      requiresAuth: true
     }
   },
   {
@@ -69,7 +84,8 @@ const routes = [
     name: 'company-view',
     component: Company,
     meta: {
-      title: "Company"
+      title: "Company",
+      requiresAuth: true
     }
   },
   {
@@ -77,7 +93,8 @@ const routes = [
     name: 'company-add',
     component: CompanyAdd,
     meta: {
-      title: "Add Company"
+      title: "Add Company",
+      requiresAuth: true
     }
   },
   {
@@ -85,7 +102,8 @@ const routes = [
     name: 'company-edit',
     component: CompanyEdit,
     meta: {
-      title: "Edit Company"
+      title: "Edit Company",
+      requiresAuth: true
     }
   },
   {
@@ -93,7 +111,8 @@ const routes = [
     name: 'audit-details',
     component: AuditDetails,
     meta: {
-      title: "Audit Details"
+      title: "Audit Details",
+      requiresAuth: true
     }
   },
   {
@@ -101,7 +120,8 @@ const routes = [
     name: 'auditors-view',
     component: AuditorsView,
     meta: {
-      title: "Auditors"
+      title: "Auditors",
+      requiresAuth: true
     }
   },
   {
@@ -109,7 +129,8 @@ const routes = [
     name: 'performance-view',
     component: AuditorPerformanceReport,
     meta: {
-      title: "Auditor's Performance Report"
+      title: "Auditor's Performance Report",
+      requiresAuth: true
     }
   },
   {
@@ -117,7 +138,8 @@ const routes = [
     name: 'auditors-add',
     component: AddAuditor,
     meta: {
-      title: " Add Auditors"
+      title: " Add Auditors",
+      requiresAuth: true
     }
   },
   {
@@ -125,7 +147,8 @@ const routes = [
     name: 'auditors-edit',
     component: EditAuditor,
     meta: {
-      title: " Edit Auditors"
+      title: " Edit Auditors",
+      requiresAuth: true
     }
   },
   {
@@ -133,7 +156,8 @@ const routes = [
     name: 'payrolls',
     component: PayrollView,
     meta: {
-      title: "Payroll"
+      title: "Payroll",
+      requiresAuth: true
     }
   },
   {
@@ -141,7 +165,8 @@ const routes = [
     name: 'payrolls-add',
     component: AddPayroll,
     meta: {
-      title: "Add Payroll"
+      title: "Add Payroll",
+      requiresAuth: true
     }
   },
   {
@@ -149,7 +174,8 @@ const routes = [
     name: 'notifications-view',
     component: NotificationsView,
     meta: {
-      title: "Notifications"
+      title: "Notifications",
+      requiresAuth: true
     }
   },
   {
@@ -157,7 +183,8 @@ const routes = [
     name: 'profile',
     component: ProfileView,
     meta: {
-      title: 'Profile'
+      title: 'Profile',
+      requiresAuth: true
     }
   },
   {
@@ -191,7 +218,8 @@ const routes = [
     component: PaymentsView,
 
     meta: {
-      title: 'Payments'
+      title: 'Payments',
+      requiresAuth: true
     }
   },
   {
@@ -200,7 +228,8 @@ const routes = [
     component: AddPayment,
 
     meta: {
-      title: 'Add Payment'
+      title: 'Add Payment',
+      requiresAuth: true
     }
   }
 ]
@@ -214,8 +243,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
-  next()
-})
+  const authToken = localStorage.getItem('token');
+
+  // If the route requires authentication and no token is found, redirect to login
+  if (to.matched.some(record => record.meta.requiresAuth) && !authToken) {
+    next({ name: 'signin' }); // Redirect to login page
+  } else {
+    next(); // Allow navigation
+  }
+});
 
 export default router

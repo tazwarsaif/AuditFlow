@@ -47,7 +47,19 @@ def add_appointment(request):
         data = request.data.copy()
         data['assigned_by'] = request.user.pk
         serializer = AppointmentCreationSerializer(data=data)
+
         if serializer.is_valid():
+
+            auditor = serializer.validated_data.get('assigned_to')
+            existing_appointment = Appointment.objects.filter(
+                assigned_to_id=auditor,
+                start_time__lt=serializer.validated_data['end_time'],
+                end_time__gt=serializer.validated_data['start_time']
+            )
+
+            if existing_appointment.exists():
+                return Response({'data': 'Appointment Clashes with another existing one'}, 400)
+
             serializer.save()
             return Response(serializer.data, 201)
         else:
